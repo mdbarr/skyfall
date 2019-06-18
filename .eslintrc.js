@@ -3,6 +3,7 @@
 module.exports = {
   'parser': 'espree',
   'parserOptions': {
+    'ecmaVersion': 8,
     'sourceType': 'script'
   },
   'env': {
