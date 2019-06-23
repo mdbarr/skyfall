@@ -9,7 +9,7 @@
   "private": false,
   "dependencies": {
     "async": "^3.0.1",
-    "barrkeep": "^2.0.2",
+    "barrkeep": "^2.1.0",
     "fastify": "^2.5.0"
   },
   "devDependencies": {
