@@ -18,14 +18,14 @@ skyjack.events.emit({
 
 skyjack.api.get({
   path: '/foo',
-  type: 'api:foo'
+  type: 'foo'
 });
 
 skyjack.api.post({
   path: '/github',
-  type: 'api:github:post'
+  type: 'github'
 });
 
 skyjack.start();
 
-skyjack.rest.get('https://cat-fact.herokuapp.com/facts/random', 'rest:cat-fact');
+skyjack.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact');
