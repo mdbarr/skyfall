@@ -6,9 +6,9 @@ require('barrkeep/pp');
 const Skyjack = require('./lib/skyjack');
 const skyjack = new Skyjack();
 
-skyjack.events.on('*', (event, next) => {
+skyjack.events.on('*', (event, done) => {
   console.pp(event);
-  next();
+  done();
 });
 
 skyjack.events.emit({
@@ -21,4 +21,11 @@ skyjack.api.get({
   type: 'api:foo'
 });
 
+skyjack.api.post({
+  path: '/github',
+  type: 'api:github:post'
+});
+
 skyjack.start();
+
+skyjack.rest.get('https://cat-fact.herokuapp.com/facts/random', 'rest:cat-fact');
