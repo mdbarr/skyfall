@@ -29,3 +29,5 @@ skyjack.api.post({
 skyjack.start();
 
 skyjack.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact');
+
+skyjack.cron.job('0 */5 * * * *', 'every-5-minutes');
