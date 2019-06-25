@@ -6,9 +6,8 @@ require('barrkeep/pp');
 const Skyjack = require('./lib/skyjack');
 const skyjack = new Skyjack();
 
-skyjack.events.on('*', (event, done) => {
+skyjack.events.on('*', (event) => {
   console.pp(event);
-  done();
 });
 
 skyjack.events.emit({
@@ -31,3 +30,14 @@ skyjack.start();
 skyjack.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact');
 
 skyjack.cron.job('0 */5 * * * *', 'every-5-minutes');
+
+skyjack.events.debounce('bouncy', { timeout: 250 }, (events) => {
+  console.pp(events);
+});
+
+for (let i = 0; i < 3; i++) {
+  skyjack.events.emit({
+    type: 'bouncy',
+    data: Math.random()
+  });
+}
