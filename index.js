@@ -6,8 +6,12 @@ require('barrkeep/pp');
 const Skyjack = require('./lib/skyjack');
 const skyjack = new Skyjack();
 
-skyjack.events.on('*', (event, context) => {
-  console.pp(context, event);
+skyjack.events.on('*', (event, context, shared) => {
+  console.pp({
+    event,
+    context,
+    shared
+  });
 });
 
 skyjack.events.emit({
