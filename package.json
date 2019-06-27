@@ -18,6 +18,6 @@
     "eslint": "^6.0.1"
   },
   "scripts": {
-    "lint": "eslint *.js lib/*.js"
+    "lint": "eslint *.js lib/*.js plugins/*.js"
   }
 }

@@ -6,6 +6,8 @@ require('barrkeep/pp');
 const Skyjack = require('./lib/skyjack');
 const skyjack = new Skyjack();
 
+skyjack.use(require('./plugins/replay'));
+
 skyjack.events.on('*', (event, context, shared) => {
   console.pp({
     event,
@@ -47,3 +49,5 @@ for (let i = 0; i < 3; i++) {
     data: Math.random()
   });
 }
+
+skyjack.replay.capture('api:foo:get');
