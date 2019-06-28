@@ -38,7 +38,7 @@ module.exports = {
     'indent': ['error', 2, { 'SwitchCase': 1 }],
     'key-spacing': ['error', { 'beforeColon': false, 'afterColon': true }],
     'keyword-spacing': 'error',
-    'max-len': [ 'error', 120, 4 ],
+    'max-len': [ 'error', 100, 4 ],
     'max-params': [ 'error', 4 ],
     'new-cap': 'error',
     'newline-per-chained-call': 'error',

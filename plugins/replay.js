@@ -1,12 +1,11 @@
 'use strict';
 
-require('barrkeep/shim');
-const uuid = require('uuid/v4');
+const { deepClone } = require('barrkeep/utils');
 
 function Replay(skyfall, { size = 10 }) {
   const captures = new Map();
 
-  skyfall.api.server.get('/replay/list', (request, reply) => {
+  skyfall.api.server.get('/replay', (request, reply) => {
     const response = [];
 
     for (const [ key ] of captures) {
@@ -18,7 +17,7 @@ function Replay(skyfall, { size = 10 }) {
       send(response);
   });
 
-  skyfall.api.server.get('/replay/:id/list', (request, reply) => {
+  skyfall.api.server.get('/replay/:id', (request, reply) => {
     const id = request.params.id;
 
     if (!captures.has(id)) {
@@ -64,7 +63,7 @@ function Replay(skyfall, { size = 10 }) {
   });
 
   this.emit = (event) => {
-    event = Object.$clone(event);
+    event = deepClone(event);
     event.timestamp = Date.now();
     event.replayed = true;
 
@@ -73,19 +72,21 @@ function Replay(skyfall, { size = 10 }) {
 
   this.capture = (pattern, condition) => {
     const capture = {
-      id: uuid(),
+      id: pattern,
       object: 'capture',
       index: new Map(),
       events: []
     };
 
     skyfall.events.on(pattern, condition, (event) => {
-      capture.events.push(event);
-      capture.index.set(event.id, event);
+      if (!event.replayed) {
+        capture.events.push(event);
+        capture.index.set(event.id, event);
 
-      if (capture.events.length > size) {
-        const old = capture.events.shift();
-        capture.index.delete(old.id);
+        if (capture.events.length > size) {
+          const old = capture.events.shift();
+          capture.index.delete(old.id);
+        }
       }
     });
 
