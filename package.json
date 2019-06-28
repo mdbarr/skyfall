@@ -1,9 +1,9 @@
 {
-  "name": "skyjack",
+  "name": "skyfall",
   "version": "0.0.1",
   "description": "Event based webhook handler",
-  "main": "skyjack.js",
-  "repository": "git@github.com:mdbarr/skyjack.git",
+  "main": "skyfall.js",
+  "repository": "git@github.com:mdbarr/skyfall.git",
   "author": "Mark Barr <mark@hyperingenuity.com>",
   "license": "MIT",
   "private": false,

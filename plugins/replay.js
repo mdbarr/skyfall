@@ -3,10 +3,10 @@
 require('barrkeep/shim');
 const uuid = require('uuid/v4');
 
-function Replay(skyjack, { size = 10 }) {
+function Replay(skyfall, { size = 10 }) {
   const captures = new Map();
 
-  skyjack.api.server.get('/replay/list', (request, reply) => {
+  skyfall.api.server.get('/replay/list', (request, reply) => {
     const response = [];
 
     for (const [ key ] of captures) {
@@ -18,7 +18,7 @@ function Replay(skyjack, { size = 10 }) {
       send(response);
   });
 
-  skyjack.api.server.get('/replay/:id/list', (request, reply) => {
+  skyfall.api.server.get('/replay/:id/list', (request, reply) => {
     const id = request.params.id;
 
     if (!captures.has(id)) {
@@ -39,7 +39,7 @@ function Replay(skyjack, { size = 10 }) {
     }
   });
 
-  skyjack.api.server.post('/replay/:id/:event', (request, reply) => {
+  skyfall.api.server.post('/replay/:id/:event', (request, reply) => {
     const id = request.params.id;
     const eventId = request.params.event;
 
@@ -68,7 +68,7 @@ function Replay(skyjack, { size = 10 }) {
     event.timestamp = Date.now();
     event.replayed = true;
 
-    skyjack.events.emit(event);
+    skyfall.events.emit(event);
   };
 
   this.capture = (pattern, condition) => {
@@ -79,7 +79,7 @@ function Replay(skyjack, { size = 10 }) {
       events: []
     };
 
-    skyjack.events.on(pattern, condition, (event) => {
+    skyfall.events.on(pattern, condition, (event) => {
       capture.events.push(event);
       capture.index.set(event.id, event);
 
@@ -97,7 +97,7 @@ function Replay(skyjack, { size = 10 }) {
 
 module.exports = {
   name: 'replay',
-  install: (skyjack, options) => {
-    skyjack.replay = new Replay(skyjack, options);
+  install: (skyfall, options) => {
+    skyfall.replay = new Replay(skyfall, options);
   }
 };

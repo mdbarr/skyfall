@@ -3,12 +3,12 @@
 
 require('barrkeep/pp');
 
-const Skyjack = require('./lib/skyjack');
-const skyjack = new Skyjack();
+const Skyfall = require('./lib/skyfall');
+const skyfall = new Skyfall();
 
-skyjack.use(require('./plugins/replay'));
+skyfall.use(require('./plugins/replay'));
 
-skyjack.events.on('*', (event, context, shared) => {
+skyfall.events.on('*', (event, context, shared) => {
   console.pp({
     event,
     context,
@@ -16,38 +16,38 @@ skyjack.events.on('*', (event, context, shared) => {
   });
 });
 
-skyjack.events.emit({
+skyfall.events.emit({
   type: 'foo',
   data: { foo: true }
 });
 
-skyjack.api.get({
+skyfall.api.get({
   path: '/foo',
   type: 'foo'
 });
 
-skyjack.api.post({
+skyfall.api.post({
   path: '/github',
   type: 'github'
 });
 
-skyjack.start();
+skyfall.start();
 
-skyjack.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact').
+skyfall.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact').
   repeat().
   repeat();
 
-skyjack.cron.job('0 */5 * * * *', 'every-5-minutes');
+skyfall.cron.job('0 */5 * * * *', 'every-5-minutes');
 
-skyjack.events.debounce('bouncy', { timeout: 250 }, (events) => {
+skyfall.events.debounce('bouncy', { timeout: 250 }, (events) => {
   console.pp(events);
 });
 
 for (let i = 0; i < 3; i++) {
-  skyjack.events.emit({
+  skyfall.events.emit({
     type: 'bouncy',
     data: Math.random()
   });
 }
 
-skyjack.replay.capture('api:foo:get');
+skyfall.replay.capture('api:foo:get');
