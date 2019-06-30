@@ -7,6 +7,7 @@ const Skyfall = require('./lib/skyfall');
 const skyfall = new Skyfall();
 
 skyfall.use(require('./plugins/replay'));
+skyfall.use(require('./plugins/mqtt'));
 
 skyfall.events.on('*', (event, context, shared) => {
   console.pp({
@@ -51,3 +52,9 @@ for (let i = 0; i < 3; i++) {
 }
 
 skyfall.replay.capture('api:foo:get');
+
+skyfall.mqtt.connect('mqtt://test.mosquitto.org', (mqtt) => {
+  console.pp(mqtt);
+  mqtt.subscribe('skyfall');
+  mqtt.publish('skyfall', 'testing...');
+});
