@@ -2,7 +2,6 @@
 
 const url = require('url');
 const mqtt = require('mqtt');
-const uuid = require('uuid/v4');
 
 function MQTT(skyfall) {
   const connections = new Map();
@@ -12,7 +11,7 @@ function MQTT(skyfall) {
     const callback = args.pop();
     const connectOptions = args.pop();
 
-    const id = uuid();
+    const id = skyfall.utils.id();
     const client = mqtt.connect(address, connectOptions);
 
     const parsed = url.parse(address);
@@ -26,6 +25,8 @@ function MQTT(skyfall) {
       }
     };
 
+    connections.set(id, connection);
+
     const mqttError = (error) => {
       if (error) {
         skyfall.events.emit({
@@ -33,34 +34,33 @@ function MQTT(skyfall) {
           data: error.toString(),
           source: id
         });
+        return error;
       }
+      return false;
     };
 
-    connection.subscribe = (topic) => {
+    skyfall.utils.hidden(connection, 'subscribe', (topic) => {
       client.subscribe(topic, (error) => {
-        mqttError(error);
+        if (!mqttError(error)) {
+          skyfall.events.emit({
+            type: `mqtt:${ name }:${ topic }:subscribed`,
+            data: topic.toString(),
+            source: id
+          });
+        }
       });
-    };
+    });
 
-    connection.unsubscribe = (topic) => {
+    skyfall.utils.hidden(connection, 'unsubscribe', (topic) => {
       client.unsubscribe(topic, (error) => {
         mqttError(error);
       });
-    };
+    });
 
-    connection.publish = (topic, message, options) => {
+    skyfall.utils.hidden(connection, 'publish', (topic, message, options) => {
       client.publish(topic, message, options, (error) => {
         mqttError(error);
       });
-    };
-
-    connections.set(id, connection);
-
-    client.on('connect', () => {
-      if (callback) {
-        return callback(connection);
-      }
-      return connection;
     });
 
     client.on('message', (topic, payload) => {
@@ -73,6 +73,13 @@ function MQTT(skyfall) {
 
     client.on('error', (error) => {
       mqttError(error);
+    });
+
+    client.on('connect', () => {
+      if (callback) {
+        return callback(connection);
+      }
+      return connection;
     });
 
     return connection;

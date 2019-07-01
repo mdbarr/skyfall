@@ -54,7 +54,7 @@ for (let i = 0; i < 3; i++) {
 
 skyfall.replay.capture('api:foo:get');
 
-skyfall.mqtt.connect('mqtt://test.mosquitto.org', (mqtt) => {
+skyfall.mqtt.connect('mqtt://localhost', (mqtt) => {
   mqtt.subscribe('skyfall');
   mqtt.publish('skyfall', 'testing...');
 });

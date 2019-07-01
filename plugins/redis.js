@@ -2,7 +2,6 @@
 
 const url = require('url');
 const redis = require('redis');
-const uuid = require('uuid/v4');
 
 function Redis(skyfall) {
   const connections = new Map();
@@ -12,7 +11,7 @@ function Redis(skyfall) {
     const callback = args.pop();
     const connectOptions = args.pop();
 
-    const id = uuid();
+    const id = skyfall.utils.id();
     const pubClient = redis.createClient(address, connectOptions);
     const subClient = redis.createClient(address, connectOptions);
 
@@ -42,17 +41,17 @@ function Redis(skyfall) {
       }
     };
 
-    connection.subscribe = (topic) => {
+    skyfall.utils.hidden(connection, 'subscribe', (topic) => {
       subClient.subscribe(topic);
-    };
+    });
 
-    connection.unsubscribe = (topic) => {
+    skyfall.utils.hidden(connection, 'unsubscribe', (topic) => {
       subClient.unsubscribe(topic);
-    };
+    });
 
-    connection.publish = (topic, message) => {
+    skyfall.utils.hidden(connection, 'publish', (topic, message) => {
       pubClient.publish(topic, message);
-    };
+    });
 
     subClient.on('subscribe', (topic) => {
       skyfall.events.emit({
