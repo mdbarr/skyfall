@@ -8,6 +8,7 @@ const skyfall = new Skyfall();
 
 skyfall.use(require('./plugins/replay'));
 skyfall.use(require('./plugins/mqtt'));
+skyfall.use(require('./plugins/redis'));
 
 skyfall.events.on('*', (event, context, shared) => {
   console.pp({
@@ -54,7 +55,14 @@ for (let i = 0; i < 3; i++) {
 skyfall.replay.capture('api:foo:get');
 
 skyfall.mqtt.connect('mqtt://test.mosquitto.org', (mqtt) => {
-  console.pp(mqtt);
   mqtt.subscribe('skyfall');
   mqtt.publish('skyfall', 'testing...');
+});
+
+skyfall.redis.connect('redis://localhost', (redis) => {
+  redis.subscribe('skyfall');
+
+  skyfall.events.on('redis:localhost:skyfall:subscribed', () => {
+    redis.publish('skyfall', 'testing...');
+  });
 });
