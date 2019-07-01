@@ -55,7 +55,7 @@ function Redis(skyfall) {
 
     subClient.on('subscribe', (topic) => {
       skyfall.events.emit({
-        type: `redis:${ name }:${ topic }:subscribed`,
+        type: `redis:${ topic }:subscribed`,
         data: topic.toString(),
         source: id
       });
@@ -63,7 +63,7 @@ function Redis(skyfall) {
 
     subClient.on('message', (topic, payload) => {
       skyfall.events.emit({
-        type: `redis:${ name }:${ topic }:message`,
+        type: `redis:${ topic }:message`,
         data: payload.toString(),
         source: id
       });

@@ -43,7 +43,7 @@ function MQTT(skyfall) {
       client.subscribe(topic, (error) => {
         if (!mqttError(error)) {
           skyfall.events.emit({
-            type: `mqtt:${ name }:${ topic }:subscribed`,
+            type: `mqtt:${ topic }:subscribed`,
             data: topic.toString(),
             source: id
           });
@@ -53,7 +53,13 @@ function MQTT(skyfall) {
 
     skyfall.utils.hidden(connection, 'unsubscribe', (topic) => {
       client.unsubscribe(topic, (error) => {
-        mqttError(error);
+        if (!mqttError(error)) {
+          skyfall.events.emit({
+            type: `mqtt:${ topic }:unsubscribed`,
+            data: topic.toString(),
+            source: id
+          });
+        }
       });
     });
 
@@ -65,7 +71,7 @@ function MQTT(skyfall) {
 
     client.on('message', (topic, payload) => {
       skyfall.events.emit({
-        type: `mqtt:${ name }:${ topic }`,
+        type: `mqtt:${ topic }:message`,
         data: payload.toString(),
         source: id
       });
