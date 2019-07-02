@@ -6,10 +6,23 @@ const redis = require('redis');
 function Redis(skyfall) {
   const connections = new Map();
 
+  this.connection = (address) => {
+    if (connections.has(address)) {
+      return connections.get(address);
+    } else if (address.startsWith('redis://')) {
+      return this.connect(address);
+    }
+    return false;
+  };
+
   this.connect = (...args) => {
     const address = args.shift();
     const callback = args.pop();
     const connectOptions = args.pop();
+
+    if (connections.has(address)) {
+      return connections.get(address);
+    }
 
     const id = skyfall.utils.id();
     const pubClient = redis.createClient(address, connectOptions);
@@ -20,7 +33,8 @@ function Redis(skyfall) {
 
     const connection = {
       id,
-      server: parsed.hostname,
+      name,
+      address,
       get subscriber() {
         return subClient.connected;
       },
@@ -30,12 +44,17 @@ function Redis(skyfall) {
     };
 
     connections.set(id, connection);
+    connections.set(address, connection);
 
     const redisClientError = (error) => {
       if (error) {
         skyfall.events.emit({
           type: `redis:${ name }:error`,
-          data: error.toString(),
+          data: {
+            name,
+            address,
+            message: error.toString()
+          },
           source: id
         });
       }
@@ -56,7 +75,12 @@ function Redis(skyfall) {
     subClient.on('subscribe', (topic) => {
       skyfall.events.emit({
         type: `redis:${ topic }:subscribed`,
-        data: topic.toString(),
+        data: {
+          name,
+          address,
+          topic,
+          message: `subscribed to ${ topic.toString() }`
+        },
         source: id
       });
     });
@@ -64,7 +88,12 @@ function Redis(skyfall) {
     subClient.on('message', (topic, payload) => {
       skyfall.events.emit({
         type: `redis:${ topic }:message`,
-        data: payload.toString(),
+        data: {
+          name,
+          address,
+          topic,
+          message: payload.toString()
+        },
         source: id
       });
     });

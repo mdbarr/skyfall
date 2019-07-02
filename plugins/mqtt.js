@@ -6,10 +6,23 @@ const mqtt = require('mqtt');
 function MQTT(skyfall) {
   const connections = new Map();
 
+  this.connection = (address) => {
+    if (connections.has(address)) {
+      return connections.get(address);
+    } else if (address.startsWith('mqtt://')) {
+      return this.connect(address);
+    }
+    return false;
+  };
+
   this.connect = (...args) => {
     const address = args.shift();
     const callback = args.pop();
     const connectOptions = args.pop();
+
+    if (connections.has(address)) {
+      return connections.get(address);
+    }
 
     const id = skyfall.utils.id();
     const client = mqtt.connect(address, connectOptions);
@@ -19,19 +32,25 @@ function MQTT(skyfall) {
 
     const connection = {
       id,
-      server: parsed.hostname,
+      name,
+      address,
       get connected() {
         return client.connected;
       }
     };
 
     connections.set(id, connection);
+    connections.set(address, connection);
 
     const mqttError = (error) => {
       if (error) {
         skyfall.events.emit({
           type: `mqtt:${ name }:error`,
-          data: error.toString(),
+          data: {
+            name,
+            address,
+            message: error.toString()
+          },
           source: id
         });
         return error;
@@ -44,7 +63,11 @@ function MQTT(skyfall) {
         if (!mqttError(error)) {
           skyfall.events.emit({
             type: `mqtt:${ topic }:subscribed`,
-            data: topic.toString(),
+            data: {
+              name,
+              address,
+              message: `subscribed to ${ topic.toString() }`
+            },
             source: id
           });
         }
@@ -56,7 +79,12 @@ function MQTT(skyfall) {
         if (!mqttError(error)) {
           skyfall.events.emit({
             type: `mqtt:${ topic }:unsubscribed`,
-            data: topic.toString(),
+            data: {
+              name,
+              address,
+              topic,
+              message: `unsubscribed from ${ topic.toString() }`
+            },
             source: id
           });
         }
@@ -72,7 +100,12 @@ function MQTT(skyfall) {
     client.on('message', (topic, payload) => {
       skyfall.events.emit({
         type: `mqtt:${ topic }:message`,
-        data: payload.toString(),
+        data: {
+          name,
+          address,
+          topic,
+          message: payload.toString()
+        },
         source: id
       });
     });

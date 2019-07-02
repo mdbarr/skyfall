@@ -48,7 +48,8 @@ skyfall.events.debounce('bouncy', { timeout: 250 }, (events) => {
 for (let i = 0; i < 3; i++) {
   skyfall.events.emit({
     type: 'bouncy',
-    data: Math.random()
+    data: Math.random(),
+    source: 'index.js'
   });
 }
 
@@ -57,12 +58,16 @@ skyfall.replay.capture('api:foo:get');
 skyfall.mqtt.connect('mqtt://localhost', (mqtt) => {
   mqtt.subscribe('skyfall');
   mqtt.publish('skyfall', 'testing...');
+
+  skyfall.events.on('mqtt:skyfall:message', { address: 'mqtt://localhost' }, (event) => {
+    console.pp(event);
+  });
 });
 
 skyfall.redis.connect('redis://localhost', (redis) => {
-  redis.subscribe('skyfall');
+  skyfall.redis.connection('redis://localhost').subscribe('skyfall');
 
-  skyfall.events.on('redis:localhost:skyfall:subscribed', () => {
+  skyfall.events.on('redis:skyfall:subscribed', () => {
     redis.publish('skyfall', 'testing...');
   });
 });
