@@ -1,6 +1,6 @@
 {
   "name": "skyfall",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Event based webhook handler",
   "main": "skyfall.js",
   "repository": "git@github.com:mdbarr/skyfall.git",
