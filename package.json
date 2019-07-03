@@ -1,8 +1,8 @@
 {
   "name": "@mdbarr/skyfall",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Event based webhook handler",
-  "main": "skyfall.js",
+  "main": "lib/skyfall.js",
   "repository": "git@github.com:mdbarr/skyfall.git",
   "author": "Mark Barr <mark@hyperingenuity.com>",
   "license": "MIT",
