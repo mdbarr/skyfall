@@ -1,5 +1,5 @@
 {
-  "name": "skyfall",
+  "name": "@mdbarr/skyfall",
   "version": "0.0.2",
   "description": "Event based webhook handler",
   "main": "skyfall.js",
