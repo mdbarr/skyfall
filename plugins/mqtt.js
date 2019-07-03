@@ -36,7 +36,8 @@ function MQTT(skyfall) {
       address,
       get connected() {
         return client.connected;
-      }
+      },
+      subscriptions: new Set()
     };
 
     connections.set(id, connection);
@@ -58,35 +59,51 @@ function MQTT(skyfall) {
       return false;
     };
 
-    skyfall.utils.hidden(connection, 'subscribe', (topic) => {
-      client.subscribe(topic, (error) => {
+    skyfall.utils.hidden(connection, 'subscribe', (topics) => {
+      client.subscribe(topics, (error) => {
         if (!mqttError(error)) {
-          skyfall.events.emit({
-            type: `mqtt:${ topic }:subscribed`,
-            data: {
-              name,
-              address,
-              message: `subscribed to ${ topic.toString() }`
-            },
-            source: id
-          });
+          if (!Array.isArray(topics)) {
+            topics = [ topics ];
+          }
+
+          for (const topic of topics) {
+            connection.subscriptions.add(topic);
+
+            skyfall.events.emit({
+              type: `mqtt:${ topic }:subscribed`,
+              data: {
+                name,
+                address,
+                message: `subscribed to ${ topic }`
+              },
+              source: id
+            });
+          }
         }
       });
     });
 
-    skyfall.utils.hidden(connection, 'unsubscribe', (topic) => {
-      client.unsubscribe(topic, (error) => {
+    skyfall.utils.hidden(connection, 'unsubscribe', (topics) => {
+      client.unsubscribe(topics, (error) => {
         if (!mqttError(error)) {
-          skyfall.events.emit({
-            type: `mqtt:${ topic }:unsubscribed`,
-            data: {
-              name,
-              address,
-              topic,
-              message: `unsubscribed from ${ topic.toString() }`
-            },
-            source: id
-          });
+          if (!Array.isArray(topics)) {
+            topics = [ topics ];
+          }
+
+          for (const topic of topics) {
+            connection.subscriptions.delete(topic);
+
+            skyfall.events.emit({
+              type: `mqtt:${ topic }:unsubscribed`,
+              data: {
+                name,
+                address,
+                topic,
+                message: `unsubscribed from ${ topic }`
+              },
+              source: id
+            });
+          }
         }
       });
     });

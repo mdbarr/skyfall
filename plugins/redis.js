@@ -35,12 +35,10 @@ function Redis(skyfall) {
       id,
       name,
       address,
-      get subscriber() {
-        return subClient.connected;
+      get connected() {
+        return subClient.connected && pubClient.connected;
       },
-      get publisher() {
-        return pubClient.connected;
-      }
+      subscriptions: new Set()
     };
 
     connections.set(id, connection);
@@ -60,12 +58,12 @@ function Redis(skyfall) {
       }
     };
 
-    skyfall.utils.hidden(connection, 'subscribe', (topic) => {
-      subClient.subscribe(topic);
+    skyfall.utils.hidden(connection, 'subscribe', (topics) => {
+      subClient.subscribe(topics);
     });
 
-    skyfall.utils.hidden(connection, 'unsubscribe', (topic) => {
-      subClient.unsubscribe(topic);
+    skyfall.utils.hidden(connection, 'unsubscribe', (topics) => {
+      subClient.unsubscribe(topics);
     });
 
     skyfall.utils.hidden(connection, 'publish', (topic, message) => {
@@ -73,13 +71,30 @@ function Redis(skyfall) {
     });
 
     subClient.on('subscribe', (topic) => {
+      connection.subscriptions.add(topic);
+
       skyfall.events.emit({
         type: `redis:${ topic }:subscribed`,
         data: {
           name,
           address,
           topic,
-          message: `subscribed to ${ topic.toString() }`
+          message: `subscribed to ${ topic }`
+        },
+        source: id
+      });
+    });
+
+    subClient.on('unsubscribe', (topic) => {
+      connection.subscriptions.delete(topic);
+
+      skyfall.events.emit({
+        type: `redis:${ topic }:unsubscribed`,
+        data: {
+          name,
+          address,
+          topic,
+          message: `unsubscribed from ${ topic }`
         },
         source: id
       });
@@ -108,7 +123,7 @@ function Redis(skyfall) {
 
     let callbackInvoked = false;
     const connected = () => {
-      if (connection.publisher && connection.subscriber) {
+      if (connection.connected) {
         if (callback && !callbackInvoked) {
           callbackInvoked = true;
           return callback(connection);

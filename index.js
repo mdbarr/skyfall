@@ -56,8 +56,9 @@ for (let i = 0; i < 3; i++) {
 skyfall.replay.capture('api:foo:get');
 
 skyfall.mqtt.connect('mqtt://localhost', (mqtt) => {
-  mqtt.subscribe('skyfall');
-  mqtt.publish('skyfall', 'testing...');
+  mqtt.subscribe('skyfall-testing');
+  mqtt.subscribe([ 'skyfall', 'skyfall-test' ]);
+  mqtt.publish('skyfall-testing', 'testing...');
 
   skyfall.events.on('mqtt:skyfall:message', { address: 'mqtt://localhost' }, (event) => {
     console.pp(event);
@@ -65,7 +66,7 @@ skyfall.mqtt.connect('mqtt://localhost', (mqtt) => {
 });
 
 skyfall.redis.connect('redis://localhost', (redis) => {
-  skyfall.redis.connection('redis://localhost').subscribe('skyfall');
+  skyfall.redis.connection('redis://localhost').subscribe([ 'skyfall', 'skyfall-test' ]);
 
   skyfall.events.on('redis:skyfall:subscribed', () => {
     redis.publish('skyfall', 'testing...');
