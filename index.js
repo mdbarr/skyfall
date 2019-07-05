@@ -6,9 +6,9 @@ require('barrkeep/pp');
 const Skyfall = require('./lib/skyfall');
 const skyfall = new Skyfall();
 
-skyfall.use(require('./plugins/replay'));
-skyfall.use(require('./plugins/mqtt'));
-skyfall.use(require('./plugins/redis'));
+skyfall.use('mqtt');
+skyfall.use('redis');
+skyfall.use('replay');
 
 skyfall.events.on('*', (event, context, shared) => {
   console.pp({
