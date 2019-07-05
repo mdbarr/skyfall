@@ -72,3 +72,8 @@ skyfall.redis.connect('redis://localhost', (redis) => {
     redis.publish('skyfall', 'testing...');
   });
 });
+
+skyfall.events.link('redis:skyfall:message', (data, next) => {
+  const value = { messages: [ data.message, 'foo' ] };
+  next(value);
+}, 'skyfall:transform:message');
