@@ -73,7 +73,7 @@ skyfall.redis.connect('redis://localhost', (redis) => {
   });
 });
 
-skyfall.events.link('redis:skyfall:message', (data, next) => {
+skyfall.events.link('redis:skyfall:message', 'skyfall:transform:message', (data, next) => {
   const value = { messages: [ data.message, 'foo' ] };
   next(value);
-}, 'skyfall:transform:message');
+});
