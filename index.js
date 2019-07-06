@@ -77,3 +77,5 @@ skyfall.events.link('redis:skyfall:message', 'skyfall:transform:message', (data,
   const value = { messages: [ data.message, 'foo' ] };
   next(value);
 });
+
+console.pp(skyfall.events.eventNames());
