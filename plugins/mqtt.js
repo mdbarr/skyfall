@@ -132,10 +132,22 @@ function MQTT(skyfall) {
     });
 
     client.on('connect', () => {
+      skyfall.events.emit({
+        type: `mqtt:${ name }:connected`,
+        data: connection,
+        source: id
+      });
+
       if (callback) {
         return callback(connection);
       }
       return connection;
+    });
+
+    skyfall.events.emit({
+      type: `mqtt:${ name }:connecting`,
+      data: connection,
+      source: id
     });
 
     return connection;
