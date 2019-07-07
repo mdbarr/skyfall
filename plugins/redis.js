@@ -126,6 +126,13 @@ function Redis(skyfall) {
       if (connection.connected) {
         if (callback && !callbackInvoked) {
           callbackInvoked = true;
+
+          skyfall.events.emit({
+            type: `redis:${ name }:connected`,
+            data: connection,
+            source: id
+          });
+
           return callback(connection);
         }
         return connection;
@@ -135,6 +142,12 @@ function Redis(skyfall) {
 
     pubClient.on('connect', connected);
     subClient.on('connect', connected);
+
+    skyfall.events.emit({
+      type: `redis:${ name }:connecting`,
+      data: connection,
+      source: id
+    });
 
     return connection;
   };
