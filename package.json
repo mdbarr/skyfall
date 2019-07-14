@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "barrkeep": "^2.2.1",
+    "barrkeep": "^2.2.2",
     "cron": "^1.7.1",
     "fastify": "^2.6.0",
     "mqtt": "^3.0.0",
