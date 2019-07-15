@@ -67,7 +67,11 @@ function Redis(skyfall) {
     });
 
     skyfall.utils.hidden(connection, 'publish', (topic, message) => {
-      pubClient.publish(topic, message);
+      pubClient.publish(topic.toString(), message.toString());
+    });
+
+    skyfall.events.on(`redis:${ name }:publish`, (event) => {
+      connection.publish(event.data.topic, event.data.message);
     });
 
     subClient.on('subscribe', (topic) => {

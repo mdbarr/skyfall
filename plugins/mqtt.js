@@ -115,7 +115,7 @@ function MQTT(skyfall) {
     });
 
     skyfall.events.on(`mqtt:${ name }:publish`, (event) => {
-      connection.publish(event.topic, event.message);
+      connection.publish(event.data.topic, event.data.message);
     });
 
     client.on('message', (topic, payload) => {
