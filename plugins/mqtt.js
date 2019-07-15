@@ -109,9 +109,13 @@ function MQTT(skyfall) {
     });
 
     skyfall.utils.hidden(connection, 'publish', (topic, message, options) => {
-      client.publish(topic, message, options, (error) => {
+      client.publish(topic.toString(), message.toString(), options, (error) => {
         mqttError(error);
       });
+    });
+
+    skyfall.events.on(`mqtt:${ name }:publish`, (event) => {
+      connection.publish(event.topic, event.message);
     });
 
     client.on('message', (topic, payload) => {
