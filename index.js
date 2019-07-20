@@ -28,12 +28,12 @@ skyfall.events.emit({
 
 skyfall.api.get({
   path: '/foo',
-  type: 'foo'
+  name: 'foo'
 });
 
 skyfall.api.post({
   path: '/github',
-  type: 'github'
+  name: 'github'
 });
 
 skyfall.start();
