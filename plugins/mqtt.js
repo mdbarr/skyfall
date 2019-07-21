@@ -1,22 +1,20 @@
 'use strict';
 
-const url = require('url');
 const mqtt = require('mqtt');
 
 function MQTT(skyfall) {
   const connections = new Map();
 
-  this.connection = (address) => {
-    if (connections.has(address)) {
-      return connections.get(address);
-    } else if (address.startsWith('mqtt://')) {
-      return this.connect(address);
+  this.connection = (id) => {
+    if (connections.has(id)) {
+      return connections.get(id);
     }
     return false;
   };
 
   this.connect = (...args) => {
     const address = args.shift();
+    const name = args.shift();
     const callback = args.pop();
     const connectOptions = args.pop();
 
@@ -25,14 +23,13 @@ function MQTT(skyfall) {
     }
 
     const id = skyfall.utils.id();
+    const alias = `$${ name.toLowerCase().replace(/[^\w]+/, '') }`;
     const client = mqtt.connect(address, connectOptions);
-
-    const parsed = url.parse(address);
-    const name = parsed.hostname;
 
     const connection = {
       id,
       name,
+      alias,
       address,
       get connected() {
         return client.connected;
@@ -42,6 +39,14 @@ function MQTT(skyfall) {
 
     connections.set(id, connection);
     connections.set(address, connection);
+    connections.set(name, connection);
+
+    Object.defineProperty(this, alias, {
+      configurable: false,
+      enumerable: false,
+      value: connection,
+      writable: false,
+    });
 
     const mqttError = (error) => {
       if (error) {
@@ -70,11 +75,13 @@ function MQTT(skyfall) {
             connection.subscriptions.add(topic);
 
             skyfall.events.emit({
-              type: `mqtt:${ topic }:subscribed`,
+              type: `mqtt:${ name }:subscribed`,
               data: {
                 name,
                 address,
-                message: `subscribed to ${ topic }`
+                topic,
+                message: `subscribed to ${ topic }`,
+                subscriptions: connection.subscriptions
               },
               source: id
             });
@@ -94,12 +101,13 @@ function MQTT(skyfall) {
             connection.subscriptions.delete(topic);
 
             skyfall.events.emit({
-              type: `mqtt:${ topic }:unsubscribed`,
+              type: `mqtt:${ name }:unsubscribed`,
               data: {
                 name,
                 address,
                 topic,
-                message: `unsubscribed from ${ topic }`
+                message: `unsubscribed from ${ topic }`,
+                subscriptions: connection.subscriptions
               },
               source: id
             });
@@ -120,7 +128,7 @@ function MQTT(skyfall) {
 
     client.on('message', (topic, payload) => {
       skyfall.events.emit({
-        type: `mqtt:${ topic }:message`,
+        type: `mqtt:${ name }:${ topic }`,
         data: {
           name,
           address,
