@@ -45,7 +45,7 @@ function MQTT(skyfall) {
       configurable: false,
       enumerable: false,
       value: connection,
-      writable: false,
+      writable: false
     });
 
     const mqttError = (error) => {

@@ -68,11 +68,11 @@ skyfall.mqtt.connect('mqtt://localhost', 'local', () => {
   });
 });
 
-skyfall.redis.connect('redis://localhost', (redis) => {
+skyfall.redis.connect('redis://localhost', 'local', () => {
   skyfall.redis.connection('redis://localhost').subscribe([ 'skyfall', 'skyfall-test' ]);
 
-  skyfall.events.on('redis:skyfall:subscribed', () => {
-    redis.publish('skyfall', 'testing...');
+  skyfall.events.on('redis:local:subscribed', { topic: 'skyfall' }, () => {
+    skyfall.redis.$local.publish('skyfall', 'testing...');
   });
 });
 

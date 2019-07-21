@@ -1,22 +1,20 @@
 'use strict';
 
-const url = require('url');
 const redis = require('redis');
 
 function Redis(skyfall) {
   const connections = new Map();
 
-  this.connection = (address) => {
-    if (connections.has(address)) {
-      return connections.get(address);
-    } else if (address.startsWith('redis://')) {
-      return this.connect(address);
+  this.connection = (id) => {
+    if (connections.has(id)) {
+      return connections.get(id);
     }
     return false;
   };
 
   this.connect = (...args) => {
     const address = args.shift();
+    const name = args.shift();
     const callback = args.pop();
     const connectOptions = args.pop();
 
@@ -25,15 +23,14 @@ function Redis(skyfall) {
     }
 
     const id = skyfall.utils.id();
+    const alias = `$${ name.toLowerCase().replace(/[^\w]+/, '') }`;
     const pubClient = redis.createClient(address, connectOptions);
     const subClient = redis.createClient(address, connectOptions);
-
-    const parsed = url.parse(address);
-    const name = parsed.hostname;
 
     const connection = {
       id,
       name,
+      alias,
       address,
       get connected() {
         return subClient.connected && pubClient.connected;
@@ -43,6 +40,14 @@ function Redis(skyfall) {
 
     connections.set(id, connection);
     connections.set(address, connection);
+    connections.set(name, connection);
+
+    Object.defineProperty(this, alias, {
+      configurable: false,
+      enumerable: false,
+      value: connection,
+      writable: false
+    });
 
     const redisClientError = (error) => {
       if (error) {
@@ -78,12 +83,13 @@ function Redis(skyfall) {
       connection.subscriptions.add(topic);
 
       skyfall.events.emit({
-        type: `redis:${ topic }:subscribed`,
+        type: `redis:${ name }:subscribed`,
         data: {
           name,
           address,
           topic,
-          message: `subscribed to ${ topic }`
+          message: `subscribed to ${ topic }`,
+          subscriptions: connection.subscriptions
         },
         source: id
       });
@@ -93,12 +99,13 @@ function Redis(skyfall) {
       connection.subscriptions.delete(topic);
 
       skyfall.events.emit({
-        type: `redis:${ topic }:unsubscribed`,
+        type: `redis:${ name }:unsubscribed`,
         data: {
           name,
           address,
           topic,
-          message: `unsubscribed from ${ topic }`
+          message: `unsubscribed from ${ topic }`,
+          subscriptions: connection.subscriptions
         },
         source: id
       });
@@ -106,7 +113,7 @@ function Redis(skyfall) {
 
     subClient.on('message', (topic, payload) => {
       skyfall.events.emit({
-        type: `redis:${ topic }:message`,
+        type: `redis:${ name }:${ topic }`,
         data: {
           name,
           address,
