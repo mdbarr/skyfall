@@ -1,6 +1,7 @@
 'use strict';
 
 const redis = require('redis');
+const { Event } = require('../lib/events');
 
 function Redis(skyfall) {
   const connections = new Map();
@@ -51,15 +52,7 @@ function Redis(skyfall) {
 
     const redisClientError = (error) => {
       if (error) {
-        skyfall.events.emit({
-          type: `redis:${ name }:error`,
-          data: {
-            name,
-            address,
-            message: error.toString()
-          },
-          source: id
-        });
+        skyfall.events.emit(Event.from(error, `redis:${ name }:error`, id));
       }
     };
 

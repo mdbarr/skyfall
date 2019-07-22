@@ -1,6 +1,7 @@
 'use strict';
 
 const mqtt = require('mqtt');
+const { Event } = require('../lib/events');
 
 function MQTT(skyfall) {
   const connections = new Map();
@@ -50,16 +51,8 @@ function MQTT(skyfall) {
 
     const mqttError = (error) => {
       if (error) {
-        skyfall.events.emit({
-          type: `mqtt:${ name }:error`,
-          data: {
-            name,
-            address,
-            message: error.toString()
-          },
-          source: id
-        });
-        return error;
+        skyfall.events.emit(Event.from(error, `mqtt:${ name }:error`, id));
+        return true;
       }
       return false;
     };
