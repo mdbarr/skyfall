@@ -23,7 +23,7 @@ function MQTT(skyfall) {
     }
 
     const id = skyfall.utils.id();
-    const alias = `$${ name.toLowerCase().replace(/[^\w]+/, '') }`;
+    const alias = skyfall.utils.alias(name);
     const client = mqtt.connect(address, connectOptions);
 
     const connection = {
