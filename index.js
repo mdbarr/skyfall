@@ -21,9 +21,15 @@ skyfall.events.on('*', (event, context, shared) => {
   });
 });
 
+skyfall.events.link('foo', 'foo:{{ info }}:{{ bar }}');
+
 skyfall.events.emit({
   type: 'foo',
-  data: { foo: true }
+  data: {
+    foo: true,
+    bar: 'yes',
+    info: 'nah'
+  }
 });
 
 skyfall.api.get({
