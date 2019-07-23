@@ -42,6 +42,11 @@ skyfall.api.post({
   name: 'github'
 });
 
+skyfall.api.static({
+  root: __dirname,
+  prefix: '/static/'
+});
+
 skyfall.start();
 
 skyfall.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact').
