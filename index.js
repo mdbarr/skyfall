@@ -10,6 +10,7 @@ skyfall.use('memory');
 skyfall.use('mqtt');
 skyfall.use('redis');
 skyfall.use('replay');
+skyfall.use('watch');
 
 skyfall.memory.memorize('*');
 
@@ -91,5 +92,7 @@ skyfall.events.transform('redis:skyfall:message', 'skyfall:transform:message', (
   const value = { messages: [ data.message, 'foo' ] };
   next(value);
 });
+
+skyfall.watch.file('index.js', 'index');
 
 console.pp(skyfall.events.eventNames());
