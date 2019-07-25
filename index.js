@@ -48,7 +48,7 @@ skyfall.api.static({
   prefix: '/static/'
 });
 
-skyfall.start();
+skyfall.api.start();
 
 skyfall.rest.get('https://cat-fact.herokuapp.com/facts/random', 'cat-fact').
   repeat().
