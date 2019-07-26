@@ -3,7 +3,7 @@
 
 require('barrkeep/pp');
 
-const Skyfall = require('./lib/skyfall');
+const Skyfall = require('../lib/skyfall');
 const skyfall = new Skyfall();
 
 skyfall.use('memory');
@@ -64,7 +64,7 @@ for (let i = 0; i < 3; i++) {
   skyfall.events.emit({
     type: 'bouncy',
     data: Math.random(),
-    source: 'index.js'
+    source: 'everything.js'
   });
 }
 
@@ -93,6 +93,6 @@ skyfall.events.transform('redis:skyfall:message', 'skyfall:transform:message', (
   next(value);
 });
 
-skyfall.watch.file('index.js', 'index');
+skyfall.watch.file('everything.js', 'index');
 
 console.pp(skyfall.events.eventNames());
