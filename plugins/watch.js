@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const { Event } = require('../lib/events');
 
 function Watch(skyfall) {
   const watchers = new Map();
@@ -38,7 +37,11 @@ function Watch(skyfall) {
       });
 
       watcher.on('error', (error) => {
-        skyfall.events.emit(Event.from(error, `watch:${ name }:error`, id));
+        skyfall.events.emit({
+          type: `watch:${ name }:error`,
+          data: error,
+          source: id
+        });
       });
 
       skyfall.utils.hidden(watch, 'watcher', watcher);
