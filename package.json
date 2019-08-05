@@ -3,6 +3,9 @@
   "version": "0.1.6",
   "description": "Event based webhook handler",
   "main": "lib/skyfall.js",
+  "bin" : {
+    "skyfall" : "./bin/cli.js"
+  },
   "repository": "git@github.com:mdbarr/skyfall.git",
   "author": "Mark Barr <mark@hyperingenuity.com>",
   "license": "MIT",
@@ -16,12 +19,13 @@
     "mqtt": "^3.0.0",
     "redis": "^2.8.0",
     "request": "^2.88.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "yargs": "^13.3.0"
   },
   "devDependencies": {
     "eslint": "^6.1.0"
   },
   "scripts": {
-    "lint": "eslint lib/*.js plugins/*.js examples/*.js"
+    "lint": "eslint bin/*.js lib/*.js plugins/*.js examples/*.js"
   }
 }
