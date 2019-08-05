@@ -3,8 +3,8 @@
   "version": "0.1.6",
   "description": "Event based webhook handler",
   "main": "lib/skyfall.js",
-  "bin" : {
-    "skyfall" : "./bin/cli.js"
+  "bin": {
+    "skyfall": "./bin/cli.js"
   },
   "repository": "git@github.com:mdbarr/skyfall.git",
   "author": "Mark Barr <mark@hyperingenuity.com>",
@@ -26,6 +26,8 @@
     "eslint": "^6.1.0"
   },
   "scripts": {
-    "lint": "eslint bin/*.js lib/*.js plugins/*.js examples/*.js"
+    "build": "docker build -t skyfall .",
+    "lint": "eslint bin/*.js lib/*.js plugins/*.js examples/*.js",
+    "start": "./bin/cli.js"
   }
 }
