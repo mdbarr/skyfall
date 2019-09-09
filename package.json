@@ -1,6 +1,6 @@
 {
   "name": "@mdbarr/skyfall",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Event based webhook handler",
   "main": "lib/skyfall.js",
   "bin": {
