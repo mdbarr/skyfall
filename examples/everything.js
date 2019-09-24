@@ -68,6 +68,18 @@ for (let i = 0; i < 3; i++) {
   });
 }
 
+skyfall.events.debounce('unibounce:*', { timeout: 1000, unique: true }, (events) => {
+  console.pp(events);
+});
+
+for (let i = 0; i < 6; i++) {
+  skyfall.events.emit({
+    type: `unibounce:${ i % 2 }`,
+    data: Math.random(),
+    source: 'everything.js'
+  });
+}
+
 skyfall.replay.capture('api:foo:get');
 
 skyfall.mqtt.connect('mqtt://localhost', 'local', () => {
