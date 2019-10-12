@@ -14,16 +14,16 @@
     "@mdbarr/uscript": "^0.1.2",
     "barrkeep": "^2.2.9",
     "cron": "^1.7.2",
-    "fastify": "^2.8.0",
+    "fastify": "^2.10.0",
     "fastify-static": "^2.5.0",
     "mqtt": "^3.0.0",
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "uuid": "^3.3.3",
-    "yargs": "^14.0.0"
+    "yargs": "^14.2.0"
   },
   "devDependencies": {
-    "eslint": "^6.4.0"
+    "eslint": "^6.5.1"
   },
   "scripts": {
     "build": "docker build -t skyfall .",
