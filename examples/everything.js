@@ -68,7 +68,10 @@ for (let i = 0; i < 3; i++) {
   });
 }
 
-skyfall.events.debounce('unibounce:*', { timeout: 1000, unique: true }, (events) => {
+skyfall.events.debounce('unibounce:*', {
+  timeout: 1000,
+  unique: true
+}, (events) => {
   console.pp(events);
 });
 
