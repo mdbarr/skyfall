@@ -15,15 +15,15 @@
     "barrkeep": "^2.4.0",
     "cron": "^1.7.2",
     "fastify": "^2.10.0",
-    "fastify-static": "^2.5.0",
+    "fastify-static": "^2.5.1",
     "mqtt": "^3.0.0",
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "uuid": "^3.3.3",
-    "yargs": "^15.0.1"
+    "yargs": "^15.0.2"
   },
   "devDependencies": {
-    "eslint": "^6.6.0"
+    "eslint": "^6.7.1"
   },
   "scripts": {
     "build": "docker build -t skyfall .",
