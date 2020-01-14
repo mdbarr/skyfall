@@ -2,7 +2,7 @@
 
 const { deepClone } = require('barrkeep/utils');
 
-function Replay(skyfall, { size = 10 }) {
+function Replay (skyfall, { size = 10 }) {
   const captures = new Map();
 
   skyfall.api.server.get('/replay', (request, reply) => {

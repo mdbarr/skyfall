@@ -1,6 +1,6 @@
 'use strict';
 
-function Memory(skyfall, { limit = 1000 } = {}) {
+function Memory (skyfall, { limit = 1000 } = {}) {
   const memory = new Map();
   const timestamps = new Map();
 

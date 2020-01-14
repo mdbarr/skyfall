@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-function Watch(skyfall) {
+function Watch (skyfall) {
   const watchers = new Map();
 
   this.file = (path, name, options = {}) => {

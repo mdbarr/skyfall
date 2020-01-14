@@ -2,7 +2,7 @@
 
 const redis = require('redis');
 
-function Redis(skyfall) {
+function Redis (skyfall) {
   const connections = new Map();
 
   this.connection = (id) => {
@@ -32,7 +32,7 @@ function Redis(skyfall) {
       name,
       alias,
       address,
-      get connected() {
+      get connected () {
         return subClient.connected && pubClient.connected;
       },
       subscriptions: new Set()

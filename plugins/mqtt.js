@@ -2,7 +2,7 @@
 
 const mqtt = require('mqtt');
 
-function MQTT(skyfall) {
+function MQTT (skyfall) {
   const connections = new Map();
 
   this.connection = (id) => {
@@ -31,7 +31,7 @@ function MQTT(skyfall) {
       name,
       alias,
       address,
-      get connected() {
+      get connected () {
         return client.connected;
       },
       subscriptions: new Set()
