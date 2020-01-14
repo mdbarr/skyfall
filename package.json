@@ -12,7 +12,7 @@
   "private": false,
   "dependencies": {
     "@mdbarr/uscript": "^0.2.0",
-    "barrkeep": "^2.4.2",
+    "barrkeep": "^2.6.0",
     "cron": "^1.7.2",
     "fastify": "^2.11.0",
     "fastify-static": "^2.5.1",
@@ -20,10 +20,10 @@
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "uuid": "^3.3.3",
-    "yargs": "^15.0.2"
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
-    "eslint": "^6.7.2"
+    "eslint": "^6.8.0"
   },
   "scripts": {
     "build": "docker build -t skyfall .",
