@@ -1,5 +1,5 @@
 {
-  "name": "@mdbarr/skyfall",
+  "name": "@metastack/skyfall",
   "version": "0.3.0",
   "description": "Event based webhook handler",
   "main": "lib/skyfall.js",
