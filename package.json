@@ -1,5 +1,5 @@
 {
-  "name": "@metastack/skyfall",
+  "name": "@hyperingenuity/skyfall",
   "version": "0.4.0",
   "description": "Event based webhook handler",
   "main": "lib/skyfall.js",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@mdbarr/uscript": "^0.3.0",
+    "@hyperingenuity/uscript": "^0.4.0",
     "barrkeep": "^2.6.6",
     "cron": "^1.8.2",
     "fastify": "^3.1.1",

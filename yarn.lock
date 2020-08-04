@@ -23,12 +23,12 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@mdbarr/uscript@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@mdbarr/uscript/-/uscript-0.3.0.tgz#ef8f02b1588bd36e1553412a33b6b6e283322bbe"
-  integrity sha512-DN+P8EFzRh3T/Q14o10YYSxOl0SAbPvpnn1QgaSgZ731eVIn4NzorUEpEbQe/4kJ788qErQRoKooxiLFpp0HOQ==
+"@hyperingenuity/uscript@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@hyperingenuity/uscript/-/uscript-0.4.0.tgz#7807b1a13dd160a2a39656bb1a307a6f0dfe49ce"
+  integrity sha512-KSBptDCLul4aBxPot/ybQrOOlOkpPeZNsefPBZXBHAAQDLXdgU7kgt6ciSJXsii9zwa2EYs73BVJjULrGNz2/g==
   dependencies:
-    barrkeep "^2.6.1"
+    barrkeep "^2.6.6"
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -159,7 +159,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-barrkeep@^2.6.1, barrkeep@^2.6.6:
+barrkeep@^2.6.6:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/barrkeep/-/barrkeep-2.6.6.tgz#bbac1ed836a938752077938ca298816a72990e25"
   integrity sha512-Rr3OHsNfPla3zzLedM7wh6HkYoG1fXCidYs0/nkONZCQ8j91Ci2ETZ+a7nMrIy7ijqXjLjWEytjxyaMuGvwLQw==
