@@ -18,7 +18,7 @@ skyfall.events.on('*', (event, context, shared) => {
   console.pp({
     event,
     context,
-    shared
+    shared,
   });
 });
 
@@ -29,23 +29,23 @@ skyfall.events.emit({
   data: {
     foo: true,
     bar: 'yes',
-    info: 'nah'
-  }
+    info: 'nah',
+  },
 });
 
 skyfall.api.get({
   path: '/foo',
-  name: 'foo'
+  name: 'foo',
 });
 
 skyfall.api.post({
   path: '/github',
-  name: 'github'
+  name: 'github',
 });
 
 skyfall.api.static({
   root: __dirname,
-  prefix: '/static/'
+  prefix: '/static/',
 });
 
 skyfall.api.start();
@@ -64,13 +64,13 @@ for (let i = 0; i < 3; i++) {
   skyfall.events.emit({
     type: 'bouncy',
     data: Math.random(),
-    source: 'everything.js'
+    source: 'everything.js',
   });
 }
 
 skyfall.events.debounce('unibounce:*', {
   timeout: 1000,
-  unique: true
+  unique: true,
 }, (events) => {
   console.pp(events);
 });
@@ -79,7 +79,7 @@ for (let i = 0; i < 6; i++) {
   skyfall.events.emit({
     type: `unibounce:${ i % 2 }`,
     data: Math.random(),
-    source: 'everything.js'
+    source: 'everything.js',
   });
 }
 

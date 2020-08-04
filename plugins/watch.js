@@ -12,7 +12,7 @@ function Watch (skyfall) {
       id,
       name,
       alias,
-      path
+      path,
     };
 
     const watcher = fs.watch(path, options, (eventType, filename) => {
@@ -21,9 +21,9 @@ function Watch (skyfall) {
         data: {
           ...watch,
           eventType,
-          filename: filename ? filename.toString() : path
+          filename: filename ? filename.toString() : path,
         },
-        source: id
+        source: id,
       });
     });
 
@@ -32,7 +32,7 @@ function Watch (skyfall) {
         skyfall.events.emit({
           type: `watch:${ name }:closed`,
           data: watch,
-          source: id
+          source: id,
         });
       });
 
@@ -40,7 +40,7 @@ function Watch (skyfall) {
         skyfall.events.emit({
           type: `watch:${ name }:error`,
           data: error,
-          source: id
+          source: id,
         });
       });
 
@@ -57,13 +57,13 @@ function Watch (skyfall) {
         configurable: false,
         enumerable: false,
         value: watch,
-        writable: false
+        writable: false,
       });
 
       skyfall.events.emit({
         type: `watch:${ name }:watching`,
         data: watch,
-        source: id
+        source: id,
       });
 
       return watch;
@@ -81,5 +81,5 @@ module.exports = {
   name: 'watch',
   install: (skyfall, options) => {
     skyfall.watch = new Watch(skyfall, options);
-  }
+  },
 };

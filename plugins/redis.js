@@ -35,7 +35,7 @@ function Redis (skyfall) {
       get connected () {
         return subClient.connected && pubClient.connected;
       },
-      subscriptions: new Set()
+      subscriptions: new Set(),
     };
 
     connections.set(id, connection);
@@ -46,7 +46,7 @@ function Redis (skyfall) {
       configurable: false,
       enumerable: false,
       value: connection,
-      writable: false
+      writable: false,
     });
 
     const redisClientError = (error) => {
@@ -54,7 +54,7 @@ function Redis (skyfall) {
         skyfall.events.emit({
           type: `redis:${ name }:error`,
           data: error,
-          source: id
+          source: id,
         });
       }
     };
@@ -85,9 +85,9 @@ function Redis (skyfall) {
           address,
           topic,
           message: `subscribed to ${ topic }`,
-          subscriptions: connection.subscriptions
+          subscriptions: connection.subscriptions,
         },
-        source: id
+        source: id,
       });
     });
 
@@ -101,9 +101,9 @@ function Redis (skyfall) {
           address,
           topic,
           message: `unsubscribed from ${ topic }`,
-          subscriptions: connection.subscriptions
+          subscriptions: connection.subscriptions,
         },
-        source: id
+        source: id,
       });
     });
 
@@ -114,9 +114,9 @@ function Redis (skyfall) {
           name,
           address,
           topic,
-          message: payload.toString()
+          message: payload.toString(),
         },
-        source: id
+        source: id,
       });
     });
 
@@ -137,7 +137,7 @@ function Redis (skyfall) {
           skyfall.events.emit({
             type: `redis:${ name }:connected`,
             data: connection,
-            source: id
+            source: id,
           });
 
           return callback(connection);
@@ -153,7 +153,7 @@ function Redis (skyfall) {
     skyfall.events.emit({
       type: `redis:${ name }:connecting`,
       data: connection,
-      source: id
+      source: id,
     });
 
     return connection;
@@ -164,5 +164,5 @@ module.exports = {
   name: 'redis',
   install: (skyfall, options) => {
     skyfall.redis = new Redis(skyfall, options);
-  }
+  },
 };

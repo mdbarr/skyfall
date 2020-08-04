@@ -67,5 +67,5 @@ module.exports = {
   name: 'memory',
   install: (skyfall, options) => {
     skyfall.memory = new Memory(skyfall, options);
-  }
+  },
 };

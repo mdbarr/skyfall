@@ -34,7 +34,7 @@ function MQTT (skyfall) {
       get connected () {
         return client.connected;
       },
-      subscriptions: new Set()
+      subscriptions: new Set(),
     };
 
     connections.set(id, connection);
@@ -45,7 +45,7 @@ function MQTT (skyfall) {
       configurable: false,
       enumerable: false,
       value: connection,
-      writable: false
+      writable: false,
     });
 
     const mqttError = (error) => {
@@ -53,7 +53,7 @@ function MQTT (skyfall) {
         skyfall.events.emit({
           type: `mqtt:${ name }:error`,
           data: error,
-          source: id
+          source: id,
         });
         return true;
       }
@@ -77,9 +77,9 @@ function MQTT (skyfall) {
                 address,
                 topic,
                 message: `subscribed to ${ topic }`,
-                subscriptions: connection.subscriptions
+                subscriptions: connection.subscriptions,
               },
-              source: id
+              source: id,
             });
           }
         }
@@ -103,9 +103,9 @@ function MQTT (skyfall) {
                 address,
                 topic,
                 message: `unsubscribed from ${ topic }`,
-                subscriptions: connection.subscriptions
+                subscriptions: connection.subscriptions,
               },
-              source: id
+              source: id,
             });
           }
         }
@@ -129,9 +129,9 @@ function MQTT (skyfall) {
           name,
           address,
           topic,
-          message: payload.toString()
+          message: payload.toString(),
         },
-        source: id
+        source: id,
       });
     });
 
@@ -143,7 +143,7 @@ function MQTT (skyfall) {
       skyfall.events.emit({
         type: `mqtt:${ name }:connected`,
         data: connection,
-        source: id
+        source: id,
       });
 
       if (callback) {
@@ -155,7 +155,7 @@ function MQTT (skyfall) {
     skyfall.events.emit({
       type: `mqtt:${ name }:connecting`,
       data: connection,
-      source: id
+      source: id,
     });
 
     return connection;
@@ -166,5 +166,5 @@ module.exports = {
   name: 'mqtt',
   install: (skyfall, options) => {
     skyfall.mqtt = new MQTT(skyfall, options);
-  }
+  },
 };

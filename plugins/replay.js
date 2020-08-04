@@ -75,7 +75,7 @@ function Replay (skyfall, { size = 10 }) {
       id: pattern,
       object: 'capture',
       index: new Map(),
-      events: []
+      events: [],
     };
 
     skyfall.events.on(pattern, condition, (event) => {
@@ -100,5 +100,5 @@ module.exports = {
   name: 'replay',
   install: (skyfall, options) => {
     skyfall.replay = new Replay(skyfall, options);
-  }
+  },
 };
