@@ -23,7 +23,7 @@
     "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "eslint": "^7.5.0"
+    "eslint": "^7.6.0"
   },
   "scripts": {
     "build": "docker build -t skyfall .",
