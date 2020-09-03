@@ -14,16 +14,16 @@
     "@hyperingenuity/uscript": "^0.4.0",
     "barrkeep": "^2.6.6",
     "cron": "^1.8.2",
-    "fastify": "^3.1.1",
+    "fastify": "^3.3.0",
     "fastify-static": "^3.2.0",
-    "mqtt": "^4.1.0",
+    "mqtt": "^4.2.1",
     "redis": "^3.0.2",
     "request": "^2.88.2",
     "uuid": "^8.3.0",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "eslint": "^7.6.0"
+    "eslint": "^7.8.1"
   },
   "scripts": {
     "build": "docker build -t skyfall .",
